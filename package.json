@@ -1,0 +1,21 @@
+{
+  "name": "hunt-backend",
+  "version": "1.0.0",
+  "description": "Backend for Hunt Tickets platform",
+  "main": "index.js",
+  "scripts": {
+    "dev": "supabase start",
+    "db:reset": "supabase db reset",
+    "db:push": "supabase db push",
+    "types:generate": "supabase gen types typescript --local > types/supabase.ts",
+    "functions:deploy": "supabase functions deploy"
+  },
+  "keywords": ["supabase", "tickets", "hunt"],
+  "author": "Hunt Tickets",
+  "license": "MIT",
+  "devDependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "typescript": "^5.3.0",
+    "@types/node": "^20.10.0"
+  }
+}
