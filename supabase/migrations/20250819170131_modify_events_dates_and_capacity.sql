@@ -2,9 +2,22 @@
 -- Change event_date from TIMESTAMP WITH TIME ZONE to DATE
 -- Add end_date as DATE
 -- Remove max_capacity and current_capacity columns
+-- Rename title to name, add keywords JSONB, add frequency enum
 
 -- Add end_date column first
 ALTER TABLE public.events ADD COLUMN end_date DATE;
+
+-- Rename title to name
+ALTER TABLE public.events RENAME COLUMN title TO name;
+
+-- Add keywords JSONB column for user labels
+ALTER TABLE public.events ADD COLUMN keywords JSONB DEFAULT '[]';
+
+-- Create frequency enum type
+CREATE TYPE frequency_type AS ENUM ('single', 'recurring');
+
+-- Add frequency column with enum
+ALTER TABLE public.events ADD COLUMN frequency frequency_type DEFAULT 'single';
 
 -- Change event_date from TIMESTAMP WITH TIME ZONE to DATE
 -- First add new column
@@ -32,6 +45,12 @@ CREATE INDEX idx_events_date ON public.events(event_date);
 
 -- Add index for end_date
 CREATE INDEX idx_events_end_date ON public.events(end_date);
+
+-- Add index for keywords JSONB
+CREATE INDEX idx_events_keywords_gin ON public.events USING GIN (keywords);
+
+-- Add index for frequency
+CREATE INDEX idx_events_frequency ON public.events(frequency);
 
 -- Add constraint to ensure end_date is after or equal to event_date
 ALTER TABLE public.events ADD CONSTRAINT events_end_date_after_start 
