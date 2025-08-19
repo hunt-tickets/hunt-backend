@@ -1,4 +1,7 @@
--- Create events table for Hunt Tickets platform
+-- Drop the problematic table if it exists
+DROP TABLE IF EXISTS public.events CASCADE;
+
+-- Create events table for Hunt Tickets platform (without special characters)
 CREATE TABLE public.events (
     id BIGSERIAL PRIMARY KEY,
     title TEXT NOT NULL,
@@ -58,8 +61,8 @@ CREATE TRIGGER update_events_updated_at
     FOR EACH ROW 
     EXECUTE FUNCTION update_updated_at_column();
 
--- Insert sample data
+-- Insert sample data (no special characters)
 INSERT INTO public.events (title, description, event_date, location, price, category, metadata) VALUES
-('Concierto Rock Nacional', 'Los mejores exponentes del rock colombiano', '2024-12-15 20:00:00+00', 'Teatro Colón, Bogotá', 75000, 'concert', '{"duration": "3 hours", "age_limit": "18+"}'),
-('Obra de Teatro Clásica', 'Representación de Romeo y Julieta', '2024-11-20 19:30:00+00', 'Teatro Nacional, Medellín', 45000, 'theater', '{"duration": "2.5 hours", "intermission": true}'),
-('Conferencia Tech 2024', 'Las últimas tendencias en tecnología', '2024-10-30 09:00:00+00', 'Centro de Convenciones, Cali', 120000, 'conference', '{"includes_lunch": true, "networking": true}');
+('Concierto Rock Nacional', 'Los mejores exponentes del rock colombiano', '2024-12-15 20:00:00+00', 'Teatro Colon, Bogota', 75000, 'concert', '{"duration": "3 hours", "age_limit": "18+"}'),
+('Obra de Teatro Clasica', 'Representacion de Romeo y Julieta', '2024-11-20 19:30:00+00', 'Teatro Nacional, Medellin', 45000, 'theater', '{"duration": "2.5 hours", "intermission": true}'),
+('Conferencia Tech 2024', 'Las ultimas tendencias en tecnologia', '2024-10-30 09:00:00+00', 'Centro de Convenciones, Cali', 120000, 'conference', '{"includes_lunch": true, "networking": true}');
