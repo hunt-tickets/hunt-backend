@@ -14,35 +14,389 @@ export type Database = {
   }
   public: {
     Tables: {
-      test: {
+      bank_details: {
         Row: {
-          created_at: string
-          email: string | null
-          id: number
-          metadata: Json | null
-          name: string | null
-          phone: string | null
-          status: string | null
+          account_holder_name: string
+          account_number: string
+          account_type: Database["public"]["Enums"]["account_type_enum"]
+          additional_banking_info: Json | null
+          bank_code: string | null
+          bank_name: string
+          branch_code: string | null
+          country_id: string
+          created_at: string | null
+          document_number: string
+          document_type: Database["public"]["Enums"]["document_type_enum"]
+          id: string
+          is_active: boolean | null
+          is_verified: boolean | null
+          profile_id: string
+          routing_number: string | null
+          swift_code: string | null
+          updated_at: string | null
+          verification_date: string | null
+        }
+        Insert: {
+          account_holder_name: string
+          account_number: string
+          account_type?: Database["public"]["Enums"]["account_type_enum"]
+          additional_banking_info?: Json | null
+          bank_code?: string | null
+          bank_name: string
+          branch_code?: string | null
+          country_id: string
+          created_at?: string | null
+          document_number: string
+          document_type: Database["public"]["Enums"]["document_type_enum"]
+          id?: string
+          is_active?: boolean | null
+          is_verified?: boolean | null
+          profile_id: string
+          routing_number?: string | null
+          swift_code?: string | null
+          updated_at?: string | null
+          verification_date?: string | null
+        }
+        Update: {
+          account_holder_name?: string
+          account_number?: string
+          account_type?: Database["public"]["Enums"]["account_type_enum"]
+          additional_banking_info?: Json | null
+          bank_code?: string | null
+          bank_name?: string
+          branch_code?: string | null
+          country_id?: string
+          created_at?: string | null
+          document_number?: string
+          document_type?: Database["public"]["Enums"]["document_type_enum"]
+          id?: string
+          is_active?: boolean | null
+          is_verified?: boolean | null
+          profile_id?: string
+          routing_number?: string | null
+          swift_code?: string | null
+          updated_at?: string | null
+          verification_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bank_details_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bank_details_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      countries: {
+        Row: {
+          code: string
+          created_at: string | null
+          default_currency_id: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          phone_prefix: string
           updated_at: string | null
         }
         Insert: {
-          created_at?: string
-          email?: string | null
-          id?: number
-          metadata?: Json | null
-          name?: string | null
-          phone?: string | null
-          status?: string | null
+          code: string
+          created_at?: string | null
+          default_currency_id?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          phone_prefix: string
           updated_at?: string | null
         }
         Update: {
-          created_at?: string
-          email?: string | null
-          id?: number
-          metadata?: Json | null
-          name?: string | null
+          code?: string
+          created_at?: string | null
+          default_currency_id?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          phone_prefix?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "countries_default_currency_id_fkey"
+            columns: ["default_currency_id"]
+            isOneToOne: false
+            referencedRelation: "currencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      currencies: {
+        Row: {
+          code: string
+          created_at: string | null
+          decimal_places: number | null
+          id: string
+          is_active: boolean | null
+          name: Json
+          symbol: string
+          updated_at: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string | null
+          decimal_places?: number | null
+          id?: string
+          is_active?: boolean | null
+          name: Json
+          symbol: string
+          updated_at?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string | null
+          decimal_places?: number | null
+          id?: string
+          is_active?: boolean | null
+          name?: Json
+          symbol?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      discount_codes: {
+        Row: {
+          amount: number
+          code: string
+          created_at: string | null
+          discount_code_type: Database["public"]["Enums"]["discount_code_type"]
+          end_time: string
+          event_id: string
+          id: string
+          max_usage: number
+          quantity: number
+          start_time: string
+          status: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          amount: number
+          code: string
+          created_at?: string | null
+          discount_code_type: Database["public"]["Enums"]["discount_code_type"]
+          end_time: string
+          event_id: string
+          id?: string
+          max_usage?: number
+          quantity?: number
+          start_time: string
+          status?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          amount?: number
+          code?: string
+          created_at?: string | null
+          discount_code_type?: Database["public"]["Enums"]["discount_code_type"]
+          end_time?: string
+          event_id?: string
+          id?: string
+          max_usage?: number
+          quantity?: number
+          start_time?: string
+          status?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discount_codes_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          add_calendar: boolean | null
+          calendar_description: string | null
+          category: Json | null
+          checkout_time: number | null
+          created_at: string | null
+          description: string | null
+          end_date: string | null
+          event_date: string
+          event_type: Json | null
+          frequency: Database["public"]["Enums"]["frequency_type"] | null
+          id: string
+          keywords: Json | null
+          max_tickets: number | null
+          min_tickets: number | null
+          name: string
+          primary_color: string | null
+          privacy: Database["public"]["Enums"]["privacy_type"] | null
+          short_description: string | null
+          status: Database["public"]["Enums"]["event_status_type"] | null
+          theme_mode: Database["public"]["Enums"]["theme_mode_type"] | null
+          tickets_left: boolean | null
+          timezone: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          add_calendar?: boolean | null
+          calendar_description?: string | null
+          category?: Json | null
+          checkout_time?: number | null
+          created_at?: string | null
+          description?: string | null
+          end_date?: string | null
+          event_date: string
+          event_type?: Json | null
+          frequency?: Database["public"]["Enums"]["frequency_type"] | null
+          id?: string
+          keywords?: Json | null
+          max_tickets?: number | null
+          min_tickets?: number | null
+          name: string
+          primary_color?: string | null
+          privacy?: Database["public"]["Enums"]["privacy_type"] | null
+          short_description?: string | null
+          status?: Database["public"]["Enums"]["event_status_type"] | null
+          theme_mode?: Database["public"]["Enums"]["theme_mode_type"] | null
+          tickets_left?: boolean | null
+          timezone?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          add_calendar?: boolean | null
+          calendar_description?: string | null
+          category?: Json | null
+          checkout_time?: number | null
+          created_at?: string | null
+          description?: string | null
+          end_date?: string | null
+          event_date?: string
+          event_type?: Json | null
+          frequency?: Database["public"]["Enums"]["frequency_type"] | null
+          id?: string
+          keywords?: Json | null
+          max_tickets?: number | null
+          min_tickets?: number | null
+          name?: string
+          primary_color?: string | null
+          privacy?: Database["public"]["Enums"]["privacy_type"] | null
+          short_description?: string | null
+          status?: Database["public"]["Enums"]["event_status_type"] | null
+          theme_mode?: Database["public"]["Enums"]["theme_mode_type"] | null
+          tickets_left?: boolean | null
+          timezone?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      events_accessibility: {
+        Row: {
+          accessible_parking: string | null
+          after_entry_instructions: string | null
+          contact_email: string | null
+          contact_name: string | null
+          contact_number: string | null
+          contact_prefix: string | null
+          created_at: string | null
+          entry_instructions: string | null
+          event_id: string
+          extra_information: Json | null
+          features: Json | null
+          hazards_information: string | null
+          id: string
+          toilet_directions: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          accessible_parking?: string | null
+          after_entry_instructions?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_number?: string | null
+          contact_prefix?: string | null
+          created_at?: string | null
+          entry_instructions?: string | null
+          event_id: string
+          extra_information?: Json | null
+          features?: Json | null
+          hazards_information?: string | null
+          id?: string
+          toilet_directions?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          accessible_parking?: string | null
+          after_entry_instructions?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_number?: string | null
+          contact_prefix?: string | null
+          created_at?: string | null
+          entry_instructions?: string | null
+          event_id?: string
+          extra_information?: Json | null
+          features?: Json | null
+          hazards_information?: string | null
+          id?: string
+          toilet_directions?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_accessibility_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: true
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          company_id: string | null
+          company_name: string | null
+          created_at: string | null
+          email: string
+          id: string
+          last_name: string
+          name: string
+          phone: string | null
+          prefix: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          company_id?: string | null
+          company_name?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          last_name: string
+          name: string
           phone?: string | null
-          status?: string | null
+          prefix?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          company_id?: string | null
+          company_name?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          last_name?: string
+          name?: string
+          phone?: string | null
+          prefix?: string | null
           updated_at?: string | null
         }
         Relationships: []
@@ -55,7 +409,26 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      account_type_enum: "savings" | "checking" | "business" | "other"
+      discount_code_type: "percentage" | "fixed_amount"
+      document_type_enum:
+        | "CC"
+        | "CE"
+        | "DNI"
+        | "RUT"
+        | "RFC"
+        | "CPF"
+        | "PASSPORT"
+        | "OTHER"
+      event_status_type:
+        | "draft"
+        | "active"
+        | "inactive"
+        | "sold_out"
+        | "cancelled"
+      frequency_type: "single" | "recurring"
+      privacy_type: "public" | "private"
+      theme_mode_type: "light" | "dark" | "adaptive"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -182,6 +555,29 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      account_type_enum: ["savings", "checking", "business", "other"],
+      discount_code_type: ["percentage", "fixed_amount"],
+      document_type_enum: [
+        "CC",
+        "CE",
+        "DNI",
+        "RUT",
+        "RFC",
+        "CPF",
+        "PASSPORT",
+        "OTHER",
+      ],
+      event_status_type: [
+        "draft",
+        "active",
+        "inactive",
+        "sold_out",
+        "cancelled",
+      ],
+      frequency_type: ["single", "recurring"],
+      privacy_type: ["public", "private"],
+      theme_mode_type: ["light", "dark", "adaptive"],
+    },
   },
 } as const
