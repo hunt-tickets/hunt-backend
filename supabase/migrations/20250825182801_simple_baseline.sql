@@ -37,20 +37,5 @@ EXCEPTION
     WHEN duplicate_object THEN null;
 END $$;
 
--- Create storage bucket for events if not exists
-DO $$ BEGIN
-    INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types) 
-    VALUES ('events', 'events', TRUE, 52428800, ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
-EXCEPTION
-    WHEN unique_violation THEN null;
-END $$;
-
--- Create performance indexes that might be missing
-CREATE INDEX IF NOT EXISTS idx_profiles_user_id ON profiles(user_id);
-CREATE INDEX IF NOT EXISTS idx_producers_user_id ON producers(user_id);
-CREATE INDEX IF NOT EXISTS idx_events_producer_id ON events(producer_id);
-CREATE INDEX IF NOT EXISTS idx_events_start_date ON events(start_date);
-CREATE INDEX IF NOT EXISTS idx_events_status ON events(status);
-CREATE INDEX IF NOT EXISTS idx_events_slug ON events(slug);
-
--- Migration complete - all tables already exist from previous deployments
+-- Migration complete - only ENUM types created/verified
+-- All tables and data already exist from previous deployments
