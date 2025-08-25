@@ -5,11 +5,35 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Create custom types
-CREATE TYPE IF NOT EXISTS event_status AS ENUM ('draft', 'published', 'cancelled', 'completed');
-CREATE TYPE IF NOT EXISTS event_language AS ENUM ('en', 'es', 'fr', 'pt', 'it', 'de');
-CREATE TYPE IF NOT EXISTS discount_type AS ENUM ('percentage', 'fixed_amount', 'free');
-CREATE TYPE IF NOT EXISTS payment_status AS ENUM ('pending', 'processing', 'succeeded', 'failed', 'cancelled', 'refunded');
-CREATE TYPE IF NOT EXISTS adjustment_type AS ENUM ('refund', 'discount', 'fee', 'tax', 'chargeback');
+DO $$ BEGIN
+    CREATE TYPE event_status AS ENUM ('draft', 'published', 'cancelled', 'completed');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE event_language AS ENUM ('en', 'es', 'fr', 'pt', 'it', 'de');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE discount_type AS ENUM ('percentage', 'fixed_amount', 'free');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE payment_status AS ENUM ('pending', 'processing', 'succeeded', 'failed', 'cancelled', 'refunded');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE adjustment_type AS ENUM ('refund', 'discount', 'fee', 'tax', 'chargeback');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
 
 -- Create currencies table
 CREATE TABLE IF NOT EXISTS currencies (
@@ -23,16 +47,16 @@ CREATE TABLE IF NOT EXISTS currencies (
 
 -- Insert currency data
 INSERT INTO currencies (code, name, symbol) VALUES
-('USD', '{"en": "US Dollar", "es": "Dólar Estadounidense"}', '$'),
-('EUR', '{"en": "Euro", "es": "Euro"}', '¬'),
-('GBP', '{"en": "British Pound", "es": "Libra Esterlina"}', '£'),
-('CAD', '{"en": "Canadian Dollar", "es": "Dólar Canadiense"}', 'C$'),
-('AUD', '{"en": "Australian Dollar", "es": "Dólar Australiano"}', 'A$'),
-('JPY', '{"en": "Japanese Yen", "es": "Yen Japonés"}', '¥'),
+('USD', '{"en": "US Dollar", "es": "Dï¿½lar Estadounidense"}', '$'),
+('EUR', '{"en": "Euro", "es": "Euro"}', 'ï¿½'),
+('GBP', '{"en": "British Pound", "es": "Libra Esterlina"}', 'ï¿½'),
+('CAD', '{"en": "Canadian Dollar", "es": "Dï¿½lar Canadiense"}', 'C$'),
+('AUD', '{"en": "Australian Dollar", "es": "Dï¿½lar Australiano"}', 'A$'),
+('JPY', '{"en": "Japanese Yen", "es": "Yen Japonï¿½s"}', 'ï¿½'),
 ('CHF', '{"en": "Swiss Franc", "es": "Franco Suizo"}', 'CHF'),
-('CNY', '{"en": "Chinese Yuan", "es": "Yuan Chino"}', '¥'),
+('CNY', '{"en": "Chinese Yuan", "es": "Yuan Chino"}', 'ï¿½'),
 ('MXN', '{"en": "Mexican Peso", "es": "Peso Mexicano"}', '$'),
-('BRL', '{"en": "Brazilian Real", "es": "Real Brasileño"}', 'R$')
+('BRL', '{"en": "Brazilian Real", "es": "Real Brasileï¿½o"}', 'R$')
 ON CONFLICT (code) DO NOTHING;
 
 -- Create profiles table
