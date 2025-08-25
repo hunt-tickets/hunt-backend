@@ -299,18 +299,18 @@ CREATE TABLE IF NOT EXISTS question_types (
     has_options BOOLEAN DEFAULT FALSE
 );
 
--- Insert question types
-INSERT INTO question_types (name, description, has_options) VALUES
-('text', 'Single line text input', FALSE),
-('textarea', 'Multi-line text input', FALSE),
-('email', 'Email address input', FALSE),
-('phone', 'Phone number input', FALSE),
-('select', 'Single choice dropdown', TRUE),
-('radio', 'Single choice radio buttons', TRUE),
-('checkbox', 'Multiple choice checkboxes', TRUE),
-('number', 'Numeric input', FALSE),
-('date', 'Date picker', FALSE),
-('url', 'Website URL input', FALSE)
+-- Insert question types (adjust columns based on existing table structure)
+INSERT INTO question_types (name, has_options) VALUES
+('text', FALSE),
+('textarea', FALSE),
+('email', FALSE),
+('phone', FALSE),
+('select', TRUE),
+('radio', TRUE),
+('checkbox', TRUE),
+('number', FALSE),
+('date', FALSE),
+('url', FALSE)
 ON CONFLICT (name) DO NOTHING;
 
 -- Create checkout questions table
